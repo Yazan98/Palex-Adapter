@@ -1,9 +1,14 @@
 package com.yazantarifi.palex.adapter.impl
 
-import com.yazantarifi.palex.adapter.PalexItemView
-import com.yazantarifi.palex.adapter.PalexViewHolder
+import android.view.View
+import com.yazantarifi.palex.adapter.data.PalexClickableViewsFactory
+import com.yazantarifi.palex.adapter.data.PalexItem
+import com.yazantarifi.palex.adapter.data.PalexItemView
+import com.yazantarifi.palex.adapter.data.PalexViewHolder
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
+import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 
-interface PalexAdapterImplementation<Item, ViewHolder: PalexViewHolder> {
+interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: PalexViewHolder> {
 
     fun getExtraCountItems(): Int
 
@@ -11,8 +16,20 @@ interface PalexAdapterImplementation<Item, ViewHolder: PalexViewHolder> {
 
     fun replaceItems(items: List<Item>?)
 
-    fun getDefaultItemViewType(): Int
-
     fun addItemViewType(item: PalexItemView<Item, ViewHolder>)
+
+    fun addItemClickListener(callback: PalexItemClickCallback<Item>)
+
+    fun addErrorsCallback(callback: PalexAdapterErrorListener)
+
+    fun setViewClickListener(view: Int)
+
+    fun setChildViewClickListener(view: Int)
+
+    fun setClickableViewsFactory(factory: PalexClickableViewsFactory)
+
+    fun bindClickableViews(itemView: View, item: Item, position: Int)
+
+    fun destroy()
 
 }

@@ -2,24 +2,33 @@ package com.yazantarifi.palex.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
+import com.yazantarifi.palex.adapter.data.PalexClickableViewsFactory
+import com.yazantarifi.palex.adapter.data.PalexItem
+import com.yazantarifi.palex.adapter.data.PalexItemView
+import com.yazantarifi.palex.adapter.data.PalexViewHolder
 import com.yazantarifi.palex.adapter.impl.PalexAdapterImplementation
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
+import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import java.lang.Exception
 
 abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constructor(
-    private val items: ArrayList<Item>? = null,
+    private val currentItems: ArrayList<Item> = ArrayList(),
     private val context: Context
 ) : RecyclerView.Adapter<ViewHolder>(), PalexAdapterImplementation<Item, ViewHolder> {
 
+    private var errorsCallback: PalexAdapterErrorListener? = null
+    private var clickCallback: PalexItemClickCallback<Item>? = null
+    private val parentClickableViews: ArrayList<Int> by lazy { ArrayList<Int>() }
+    private val childsClickableViews: ArrayList<Int> by lazy { ArrayList() }
+    private val currentViewItems: ArrayList<PalexItemView<Item, ViewHolder>> by lazy(LazyThreadSafetyMode.NONE) { ArrayList() }
     companion object {
         private const val EXTRA_COUNT_ITEMS = 0
     }
 
-    private val currentViewItems: ArrayList<PalexItemView<Item, ViewHolder>> by lazy { ArrayList() }
-    private val currentItems: ArrayList<Item> by lazy {
-        ArrayList(items ?: ArrayList())
-    }
 
     /**
      * This Method Used to Add Supported ViewTypes to Current Adapter
@@ -56,6 +65,61 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
     }
 
     /**
+     * This Method Used To Attach Click Listener on Parent Item in Each ViewType
+     * This Callback will Recive Clicks from All Views in Adapter Just on Parent Views
+     *
+     * If You Want to Add Click Listener on Child Views You Need To Attach them in Adapter
+     * By Calling setChildClickListener(itemView: Int)
+     */
+    override fun addItemClickListener(callback: PalexItemClickCallback<Item>) {
+        this.clickCallback = callback
+    }
+
+    /**
+     * This Method Used to Add All Clickable Childs Ids to Loop on Them
+     * If The Binding Method Found Any Id from These Ids Will Add Click Listener on it
+     * and Return the Click in PalexItemClickCallback
+     *
+     * You can Call this Method Multiple Times to Add A lot of Clickable Views
+     */
+    override fun setChildViewClickListener(@IdRes view: Int) {
+        this.childsClickableViews.add(view)
+    }
+
+    /**
+     * This method Used to Add Click Listener on Parent Views Only
+     * You Need to Call This method Once Adapter Created to Add All Clickable Views
+     * and The Click Action will returned in PalexItemClickCallback
+     *
+     * You can Call this Method Multiple Times to Add A lot of Clickable Views
+     */
+    override fun setViewClickListener(@IdRes view: Int) {
+        this.parentClickableViews.add(view)
+    }
+
+    /**
+     * If you want To Add Clickable Views to Your Adapter
+     * You Need to Add Clickable Views
+     *
+     * You can Use this Methods if your Views is Dynamic or you want to Set Them in Fragment or Activity
+     * 1. setChildViewClickListener
+     * 2. setViewClickListener
+     *
+     * If you have Static Clickable Ids You can Build Your Clickable Views Factory
+     * and Add All Ids to This Factory and this Will do the same as set Childs, Parents
+     * Also this Factory is Good to Move this Kind of Logic outside Fragment
+     */
+    override fun setClickableViewsFactory(factory: PalexClickableViewsFactory) {
+        if (!factory.getParentClickableViews().isNullOrEmpty()) {
+            this.parentClickableViews.addAll(factory.getParentClickableViews())
+        }
+
+        if (!factory.getChildsClickableViews().isNullOrEmpty()) {
+            this.parentClickableViews.addAll(factory.getChildsClickableViews())
+        }
+    }
+
+    /**
      * Create ViewHolder By Resource Layout on Each Item View
      * This Method Will Loop on Supported Items to Find Item by Specific Type
      */
@@ -67,19 +131,64 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
             }
         }
 
-        return currentItem?.onBindViewHolder(parent.context) as ViewHolder
+        return currentItem?.onBindViewHolder(LayoutInflater.from(parent.context)) as ViewHolder
     }
 
     /**
      * This Method Will Loop on all supported ViewType
      * and Bind each View in Adapter in Their own Bind Method
+     *
+     * Here The Clickable Items Binding Will Start to Add Click Listener on Parent Views
+     * Then Will Do Mapping to Map All Items and Call onBindViewItem for Each ItemView in Adapter
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentItem = currentItems[position]
-        for (i in currentViewItems) {
-            if (i.getViewType() == currentItem.getItemViewType()) {
-                i.onBindViewItem(currentItem, position, holder, context)
+        try {
+            val currentItem = currentItems[position]
+            bindClickableViews(holder.itemView, currentItem, position)
+            for (viewItem in currentViewItems) {
+                if (viewItem.getViewType() == currentItem.getItemViewType()) {
+                    viewItem.onBindViewItem(currentItem, position, holder, context)
+                }
             }
+        } catch (ex: Exception) {
+            this.errorsCallback?.onErrorAttached(ex)
+        }
+    }
+
+    /**
+     * Use This Method To Catch Un Expected Errors in Adapter While Binding or Any Other Exception
+     * And Do a Fallback Action in Case Adapter Throws Exception
+     */
+    override fun addErrorsCallback(callback: PalexAdapterErrorListener) {
+        this.errorsCallback = callback
+    }
+
+    /**
+     * This Method Will Bind the Parent Views in Adapter to Add Click Listener on Them
+     * and Return the Click Event for Listener and Perform Action Based on Click
+     *
+     * Child Views Binding will Start in Each ItemView Internally
+     */
+    override fun bindClickableViews(itemView: View, item: Item, position: Int) {
+        if (this.clickCallback == null) {
+            return
+        }
+
+        try {
+            for (i in parentClickableViews) {
+                if (i == itemView.id) {
+                    itemView.setOnClickListener {
+                        this.clickCallback?.onItemClicked(item, position, itemView.id)
+                    }
+
+                    itemView.setOnLongClickListener {
+                        this.clickCallback?.onItemLongClicked(item, position, itemView.id)
+                        true
+                    }
+                }
+            }
+        } catch (ex: Exception) {
+            this.errorsCallback?.onErrorAttached(ex)
         }
     }
 
@@ -92,6 +201,7 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
             val currentItem = currentItems[position] as? PalexItemView<Item, ViewHolder> ?: return super.getItemViewType(position)
             return currentItem.getViewType()
         } catch (ex: Exception) {
+            errorsCallback?.onErrorAttached(ex)
             return super.getItemViewType(position)
         }
     }
@@ -114,6 +224,18 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
      */
     override fun getExtraCountItems(): Int {
         return EXTRA_COUNT_ITEMS
+    }
+
+    /**
+     * It's Important to Call this Method in
+     * Activity -> onDestroy
+     * Fragment -> onDestroyView
+     *
+     * To Remove All Listeners, Callbacks
+     */
+    override fun destroy() {
+        this.clickCallback = null
+        this.errorsCallback = null
     }
 
 }
