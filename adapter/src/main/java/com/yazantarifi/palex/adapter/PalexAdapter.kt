@@ -12,15 +12,20 @@ import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.adapter.data.PalexViewHolder
 import com.yazantarifi.palex.adapter.impl.PalexAdapterImplementation
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import java.lang.Exception
 
 abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constructor(
     private val currentItems: ArrayList<Item> = ArrayList(),
-    private val context: Context
+    private val context: Context,
+    private val viewPool: RecyclerView.RecycledViewPool? = null
 ) : RecyclerView.Adapter<ViewHolder>(), PalexAdapterImplementation<Item, ViewHolder> {
 
+    private var paginationPageSize: Int = 0
+    private var isPaginationEnabled: Boolean = false
     private var errorsCallback: PalexAdapterErrorListener? = null
+    private var paginationCallback: PalexAdapterPaginationCallback? = null
     private var clickCallback: PalexItemClickCallback<Item>? = null
     private val parentClickableViews: ArrayList<Int> by lazy { ArrayList<Int>() }
     private val childsClickableViews: ArrayList<Int> by lazy { ArrayList() }
@@ -147,12 +152,41 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
             bindClickableViews(holder.itemView, currentItem, position)
             for (viewItem in currentViewItems) {
                 if (viewItem.getViewType() == currentItem.getItemViewType()) {
-                    viewItem.onBindViewItem(currentItem, position, holder, context)
+                    viewItem.onBindViewItem(currentItem, position, holder, context, viewPool)
                 }
+            }
+
+            if (isPaginationEnabled && ((position / paginationPageSize) + paginationPageSize) >= paginationPageSize) {
+                paginationCallback?.onNextPageRequest()
             }
         } catch (ex: Exception) {
             this.errorsCallback?.onErrorAttached(ex)
         }
+    }
+
+    /**
+     * This Method Used when You Add Items From Pagination After Requesting New Pages
+     * If The Pagination is Finished Will Remove All Pagination Logic
+     * If False will Add items To Prev Items In Adapter and Let Adapter Know
+     * The Data Was Changed ...
+     */
+    override fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>) {
+        if (isFinished) {
+            this.isPaginationEnabled = false
+            this.paginationPageSize = 0
+            this.paginationCallback = null
+        }
+
+        addItems(newItems)
+    }
+
+    /**
+     * Add Pagination Info Here to Request New Page And What is The Page Size For Each Request
+     * Here you Can Enable or Disable the Pagination in Adapter
+     */
+    override fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback) {
+        this.isPaginationEnabled = isEnabled
+        this.paginationPageSize = pageSize
     }
 
     /**
@@ -178,12 +212,20 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
             for (i in parentClickableViews) {
                 if (i == itemView.id) {
                     itemView.setOnClickListener {
-                        this.clickCallback?.onItemClicked(item, position, itemView.id)
+                        this.clickCallback?.onItemClicked(item, position, it.id)
                     }
 
                     itemView.setOnLongClickListener {
-                        this.clickCallback?.onItemLongClicked(item, position, itemView.id)
+                        this.clickCallback?.onItemLongClicked(item, position, it.id)
                         true
+                    }
+                }
+            }
+
+            for (childItem in childsClickableViews) {
+                itemView.findViewById<View>(childItem)?.let {
+                    it.setOnClickListener {
+                        this.clickCallback?.onItemLongClicked(item, position, it.id)
                     }
                 }
             }
@@ -236,6 +278,7 @@ abstract class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constr
     override fun destroy() {
         this.clickCallback = null
         this.errorsCallback = null
+        this.paginationCallback = null
     }
 
 }

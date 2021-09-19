@@ -6,6 +6,7 @@ import com.yazantarifi.palex.adapter.data.PalexItem
 import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.adapter.data.PalexViewHolder
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 
 interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: PalexViewHolder> {
@@ -29,6 +30,10 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: PalexViewHolde
     fun setClickableViewsFactory(factory: PalexClickableViewsFactory)
 
     fun bindClickableViews(itemView: View, item: Item, position: Int)
+
+    fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback)
+
+    fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>)
 
     fun destroy()
 
