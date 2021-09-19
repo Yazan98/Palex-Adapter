@@ -1,4 +1,4 @@
-package com.yazantarifi.palex.adapter.data
+package com.yazantarifi.palex.multiViews.data
 
 interface PalexItem {
 

@@ -1,4 +1,4 @@
-package com.yazantarifi.palex.adapter.data
+package com.yazantarifi.palex.adapter.factory
 
 /**
  * If Your Adapter has Static Clickable Views You can Attach This Factory

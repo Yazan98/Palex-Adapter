@@ -1,0 +1,25 @@
+package com.yazantarifi.palex.multiViews.data
+
+data class Post(
+    var id: Long = 0,
+    var title: String = "",
+    var description: String = "",
+    var createdAt: Long,
+    var type: Int,
+    var profileImage: String,
+    var ownerName: String,
+    var images: List<String>,
+    var singleImage: String
+): PalexItem {
+
+    companion object {
+        const val TEXT = 1
+        const val IMAGES = 2
+        const val SINGLE_IMAGE = 3
+    }
+
+    override fun getItemViewType(): Int {
+        return type
+    }
+
+}

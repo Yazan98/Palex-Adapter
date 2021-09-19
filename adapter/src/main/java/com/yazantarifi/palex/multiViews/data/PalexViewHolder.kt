@@ -1,4 +1,4 @@
-package com.yazantarifi.palex.adapter.data
+package com.yazantarifi.palex.multiViews.data
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
