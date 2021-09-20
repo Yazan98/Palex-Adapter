@@ -11,6 +11,7 @@ import com.yazantarifi.palex.multiViews.data.Post
 import com.yazantarifi.palex.multiViews.data.PostViewHolder
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
+import com.yazantarifi.palex.adapter.data.PalexItem
 import kotlinx.android.synthetic.main.fragment_multi_views_example.*
 import java.lang.Exception
 
@@ -32,8 +33,8 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
         }
     }
 
-    private fun getPostsAdapter(): PalexAdapter<Post, PostViewHolder> {
-        return PalexAdapter<Post, PostViewHolder>(getPostsItems(), requireContext(), pool).apply {
+    private fun getPostsAdapter(): PalexAdapter<PalexItem, PostViewHolder> {
+        return PalexAdapter<PalexItem, PostViewHolder>(getPostsItems(), requireContext(), pool).apply {
             this.addErrorsCallback(this@MultiViewFragmentExample)
             this.addPaginationStatus(true, 10, paginationCallback)
             this.setViewTypesFactory(PostsItemViewFactory())
@@ -41,9 +42,36 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
         }
     }
 
-    private fun getPostsItems(): ArrayList<Post> {
-        return ArrayList<Post>().apply {
-
+    private fun getPostsItems(): ArrayList<PalexItem> {
+        return ArrayList<PalexItem>().apply {
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
         }
     }
 

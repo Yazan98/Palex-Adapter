@@ -1,16 +1,16 @@
 package com.yazantarifi.palex.adapter.impl
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.factory.PalexClickableViewsFactory
-import com.yazantarifi.palex.multiViews.data.PalexItem
-import com.yazantarifi.palex.multiViews.data.PalexItemView
-import com.yazantarifi.palex.multiViews.data.PalexViewHolder
+import com.yazantarifi.palex.adapter.data.PalexItem
+import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.adapter.factory.PalexItemViewsFactory
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 
-interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: PalexViewHolder> {
+interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> {
 
     fun getExtraCountItems(): Int
 

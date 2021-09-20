@@ -1,5 +1,7 @@
 package com.yazantarifi.palex.multiViews.data
 
+import com.yazantarifi.palex.adapter.data.PalexItem
+
 data class Post(
     var id: Long = 0,
     var title: String = "",

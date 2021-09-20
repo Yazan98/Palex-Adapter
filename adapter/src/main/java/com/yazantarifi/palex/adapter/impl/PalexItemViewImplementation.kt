@@ -8,7 +8,7 @@ interface PalexItemViewImplementation<Item, ViewHolder> {
 
     fun onBindViewItem(item: Item, position: Int, viewHolder: ViewHolder, context: Context, pool: RecyclerView.RecycledViewPool? = null)
 
-    fun onBindViewHolder(inflater: LayoutInflater): ViewHolder
+    fun onBindViewHolder(context: Context): ViewHolder
 
     fun getLayoutResource(): Int
 

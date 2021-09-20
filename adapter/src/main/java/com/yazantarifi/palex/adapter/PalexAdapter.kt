@@ -1,15 +1,13 @@
 package com.yazantarifi.palex.adapter
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.factory.PalexClickableViewsFactory
-import com.yazantarifi.palex.multiViews.data.PalexItem
-import com.yazantarifi.palex.multiViews.data.PalexItemView
-import com.yazantarifi.palex.multiViews.data.PalexViewHolder
+import com.yazantarifi.palex.adapter.data.PalexItem
+import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.adapter.factory.PalexItemViewsFactory
 import com.yazantarifi.palex.adapter.impl.PalexAdapterImplementation
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
@@ -17,7 +15,7 @@ import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import java.lang.Exception
 
-open class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constructor(
+open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> constructor(
     private val currentItems: ArrayList<Item> = ArrayList(),
     private val context: Context,
     private val viewPool: RecyclerView.RecycledViewPool? = null
@@ -147,7 +145,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: PalexViewHolder> constructo
             }
         }
 
-        return currentItem?.onBindViewHolder(LayoutInflater.from(parent.context)) as ViewHolder
+        return currentItem?.onBindViewHolder(parent.context) as ViewHolder
     }
 
     /**
