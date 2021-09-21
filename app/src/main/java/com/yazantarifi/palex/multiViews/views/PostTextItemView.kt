@@ -2,22 +2,33 @@ package com.yazantarifi.palex.multiViews.views
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.R
 import com.yazantarifi.palex.adapter.data.PalexItem
 import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.multiViews.data.Post
 import com.yazantarifi.palex.multiViews.data.PostViewHolder
+import kotlinx.android.synthetic.main.row_post_text.view.*
 
 
-class PostTextItemView: PalexItemView<PalexItem, PostViewHolder>() {
+class PostTextItemView: PalexItemView<PalexItem, PostTextItemView.ViewHolder>() {
 
-    override fun onBindViewItem(item: PalexItem, position: Int, viewHolder: PostViewHolder, context: Context, pool: RecyclerView.RecycledViewPool?) {
-
+    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+        val description: TextView? = view.description
+        val postText: TextView? = view.postText
     }
 
-    override fun onBindViewHolder(context: Context): PostViewHolder {
-        return PostViewHolder(LayoutInflater.from(context).inflate(getLayoutResource(), null, false))
+    override fun onBindViewItem(item: PalexItem, position: Int, viewHolder: ViewHolder, context: Context, pool: RecyclerView.RecycledViewPool?) {
+        (item as? Post?)?.let {
+            viewHolder.description?.text = it.description
+            viewHolder.postText?.text = it.title
+        }
+    }
+
+    override fun onBindViewHolder(context: Context): ViewHolder {
+        return ViewHolder(getLayout(context))
     }
 
     override fun getLayoutResource(): Int {

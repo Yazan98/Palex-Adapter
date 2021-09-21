@@ -44,9 +44,9 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
 
     private fun getPostsItems(): ArrayList<PalexItem> {
         return ArrayList<PalexItem>().apply {
-            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
-            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
-            add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here Should Be Long String", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Random String Should Be Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description New Randim String for Description", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
@@ -77,7 +77,7 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
 
     private val paginationCallback: PalexAdapterPaginationCallback = object : PalexAdapterPaginationCallback {
         override fun onNextPageRequest() {
-
+            println("III :: onNextRequest")
         }
     }
 
