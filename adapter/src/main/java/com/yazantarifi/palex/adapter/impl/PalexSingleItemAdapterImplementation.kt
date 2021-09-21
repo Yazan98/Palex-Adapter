@@ -17,6 +17,8 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
 
     fun addChildClickableViewIds(childClickableIds: ArrayList<Int>)
 
+    fun addClickEffectItem(view: View?)
+
     fun addItems(items: ArrayList<Item>)
 
     fun replaceItems(items: ArrayList<Item>)

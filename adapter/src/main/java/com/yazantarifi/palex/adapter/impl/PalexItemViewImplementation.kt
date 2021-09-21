@@ -11,6 +11,8 @@ interface PalexItemViewImplementation<Item, ViewHolder> {
 
     fun onBindViewHolder(context: Context): ViewHolder
 
+    fun addClickEffectItem(view: View?)
+
     fun getLayout(context: Context): View
 
     fun getLayoutResource(): Int

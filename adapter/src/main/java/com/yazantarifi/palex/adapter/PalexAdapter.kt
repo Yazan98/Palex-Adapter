@@ -15,6 +15,14 @@ import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import java.lang.Exception
 
+/**
+ * This Adapter is The Multi Views Adapter Used When You Want to Add Multiple View holders
+ * And Bind all Of them By ViewType for Each Item in the List
+ *
+ * Context Param is Required Always
+ * ViewPool Required Only if your ViewHolders has RecyclerView to be Nested RecyclerViews
+ * Clickable Views Will start Binding only Via Factories or Attaching Click Listener
+ */
 open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> constructor(
     private val currentItems: ArrayList<Item> = ArrayList(),
     private val context: Context,

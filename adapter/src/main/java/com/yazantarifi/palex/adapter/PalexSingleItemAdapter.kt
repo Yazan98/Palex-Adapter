@@ -10,6 +10,11 @@ import com.yazantarifi.palex.adapter.impl.PalexSingleItemAdapterImplementation
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import java.lang.Exception
+import android.content.res.TypedArray
+
+import android.R
+import android.annotation.SuppressLint
+
 
 /**
  * This Adapter mainly Built to Bind Single Item Only
@@ -176,6 +181,25 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
        } catch (ex: Exception) {
            this.errorListener?.onErrorAttached(ex)
        }
+    }
+
+    /**
+     * Add Ripple Click Effect on Each Target View
+     * If you want to Add Click Effect on Each Item in Adapter
+     * Call This Method
+     */
+    @SuppressLint("Recycle")
+    override fun addClickEffectItem(view: View?) {
+        try {
+            view?.let {
+                val attrs = intArrayOf(R.attr.selectableItemBackground)
+                val typedArray: TypedArray = context.obtainStyledAttributes(attrs)
+                val backgroundResource = typedArray.getResourceId(0, 0)
+                view.setBackgroundResource(backgroundResource)
+            }
+        } catch (ex: Exception) {
+            this.errorListener?.onErrorAttached(ex)
+        }
     }
 
     /**
