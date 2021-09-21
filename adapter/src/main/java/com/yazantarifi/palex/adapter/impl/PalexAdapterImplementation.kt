@@ -9,6 +9,7 @@ import com.yazantarifi.palex.adapter.factory.PalexItemViewsFactory
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
+import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 
 interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> {
 
@@ -23,6 +24,12 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.V
     fun addItemClickListener(callback: PalexItemClickCallback<Item>)
 
     fun addErrorsCallback(callback: PalexAdapterErrorListener)
+
+    fun addRemoveCallback(callback: PalexRemoveListener<Item>)
+
+    fun removeItem(position: Int)
+
+    fun removeItem(position: Int, isAnimationEnabled: Boolean, animationDuration: Long, targetView: View?)
 
     fun setViewClickListener(view: Int)
 

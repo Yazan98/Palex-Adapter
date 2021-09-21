@@ -1,8 +1,11 @@
 package com.yazantarifi.palex.adapter
 
+import android.R
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.factory.PalexClickableViewsFactory
@@ -13,7 +16,12 @@ import com.yazantarifi.palex.adapter.impl.PalexAdapterImplementation
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
+import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 import java.lang.Exception
+import androidx.core.content.ContentProviderCompat.requireContext
+
+
+
 
 /**
  * This Adapter is The Multi Views Adapter Used When You Want to Add Multiple View holders
@@ -31,6 +39,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
 
     private var paginationPageSize: Int = 0
     private var isPaginationEnabled: Boolean = false
+    private var removeCallback: PalexRemoveListener<Item>? = null
     private var errorsCallback: PalexAdapterErrorListener? = null
     private var paginationCallback: PalexAdapterPaginationCallback? = null
     private var clickCallback: PalexItemClickCallback<Item>? = null
@@ -248,6 +257,60 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
     }
 
     /**
+     * Use This Callback When you want to Return the Removed Item Event and it's Position
+     * This Method Will Be Trigger the Attached Callback via removeItem(Position)
+     */
+    override fun addRemoveCallback(callback: PalexRemoveListener<Item>) {
+        this.removeCallback = callback
+    }
+
+    /**
+     * Use this Method when You Want to Remove Item By Position
+     * Just Call this Method With The Target Remvoed Position and This Will Rmeove
+     * The Target Item then Notify Adapter that Item is Removed from List
+     *
+     * If you want to Get Event Callback about Removing Item
+     * Call this Method addRemoveListener to Attach Remove Listener
+     */
+    override fun removeItem(position: Int) {
+        try {
+            if (position == RecyclerView.NO_POSITION) {
+                return
+            }
+
+            val currentItem = this.currentItems[position]
+            this.currentItems.remove(currentItem)
+            notifyItemRemoved(position)
+            this.removeCallback?.onItemRemoved(currentItem, position)
+        } catch (ex: Exception) {
+            this.errorsCallback?.onErrorAttached(ex)
+        }
+    }
+
+    /**
+     * Use this Method when You want to Remove Item With Animation
+     * If you Don't Use Animation Use this Method (removeItem(Position))
+     * if You want a Fade Out Animation Call this Method
+     */
+    override fun removeItem(position: Int, isAnimationEnabled: Boolean, animationDuration: Long, targetView: View?) {
+        try {
+            if (position == RecyclerView.NO_POSITION) {
+                return
+            }
+
+            if (isAnimationEnabled) {
+                val anim: Animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
+                anim.duration = animationDuration
+                targetView?.startAnimation(anim)
+            }
+
+            removeItem(position)
+        } catch (ex: Exception) {
+            this.errorsCallback?.onErrorAttached(ex)
+        }
+    }
+
+    /**
      * Use This Method To Catch Un Expected Errors in Adapter While Binding or Any Other Exception
      * And Do a Fallback Action in Case Adapter Throws Exception
      */
@@ -270,11 +333,11 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
             for (i in parentClickableViews) {
                 if (i == itemView.id) {
                     itemView.setOnClickListener {
-                        this.clickCallback?.onItemClicked(item, position, it.id)
+                        this.clickCallback?.onItemClicked(item, position, it)
                     }
 
                     itemView.setOnLongClickListener {
-                        this.clickCallback?.onItemLongClicked(item, position, it.id)
+                        this.clickCallback?.onItemLongClicked(item, position, it)
                         true
                     }
                 }
@@ -283,7 +346,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
             for (childItem in childsClickableViews) {
                 itemView.findViewById<View>(childItem)?.let {
                     it.setOnClickListener {
-                        this.clickCallback?.onItemLongClicked(item, position, it.id)
+                        this.clickCallback?.onItemLongClicked(item, position, it)
                     }
                 }
             }
@@ -337,6 +400,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
         this.clickCallback = null
         this.errorsCallback = null
         this.paginationCallback = null
+        this.removeCallback = null
     }
 
 }

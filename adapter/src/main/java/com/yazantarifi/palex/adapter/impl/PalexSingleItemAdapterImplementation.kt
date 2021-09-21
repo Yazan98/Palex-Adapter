@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.data.PalexSingleItem
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
+import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 
 interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder: RecyclerView.ViewHolder> {
 
@@ -25,9 +26,13 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
 
     fun removeItem(position: Int)
 
+    fun removeItem(position: Int, isAnimationEnabled: Boolean, animationDuration: Long, targetView: View?)
+
     fun addClickListener(callback: PalexItemClickCallback<Item>)
 
     fun addErrorListener(callback: PalexAdapterErrorListener)
+
+    fun addRemoveListener(callback: PalexRemoveListener<Item>)
 
     fun getViewHolder(context: Context): ViewHolder
 

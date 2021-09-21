@@ -14,6 +14,9 @@ import android.content.res.TypedArray
 
 import android.R
 import android.annotation.SuppressLint
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 
 
 /**
@@ -28,6 +31,7 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     private val items: ArrayList<Item>
 ): RecyclerView.Adapter<ViewHolder>(), PalexSingleItemAdapterImplementation<Item, ViewHolder> {
 
+    private var removeCallback: PalexRemoveListener<Item>? = null
     private var errorListener: PalexAdapterErrorListener? = null
     private var clicksCallback: PalexItemClickCallback<Item>? = null
     private val childClickableIds: ArrayList<Int> by lazy {
@@ -79,11 +83,11 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
         }
 
         viewHolder.itemView?.setOnClickListener {
-            this.clicksCallback?.onItemClicked(items[position], position, it.id)
+            this.clicksCallback?.onItemClicked(items[position], position, it)
         }
 
         viewHolder.itemView?.setOnLongClickListener {
-            this.clicksCallback?.onItemLongClicked(items[position], position, it.id)
+            this.clicksCallback?.onItemLongClicked(items[position], position, it)
             true
         }
     }
@@ -102,11 +106,11 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
         for (item in childClickableIds) {
             viewHolder.itemView?.findViewById<View>(item)?.let {
                 it.setOnClickListener {
-                    this.clicksCallback?.onItemClicked(items[position], position, it.id)
+                    this.clicksCallback?.onItemClicked(items[position], position, it)
                 }
 
                 it.setOnLongClickListener {
-                    this.clicksCallback?.onItemLongClicked(items[position], position, it.id)
+                    this.clicksCallback?.onItemLongClicked(items[position], position, it)
                     true
                 }
             }
@@ -120,6 +124,14 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      */
     override fun addChildClickableViewIds(childClickableIds: ArrayList<Int>) {
         this.childClickableIds.addAll(childClickableIds)
+    }
+
+    /**
+     * Use This Callback When you want to Return the Removed Item Event and it's Position
+     * This Method Will Be Trigger the Attached Callback via removeItem(Position)
+     */
+    override fun addRemoveListener(callback: PalexRemoveListener<Item>) {
+        this.removeCallback = callback
     }
 
     /**
@@ -172,15 +184,46 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      * Use this Method when You Want to Remove Item By Position
      * Just Call this Method With The Target Remvoed Position and This Will Rmeove
      * The Target Item then Notify Adapter that Item is Removed from List
+     *
+     * If you want to Get Event Callback about Removing Item
+     * Call this Method addRemoveListener to Attach Remove Listener
      */
     override fun removeItem(position: Int) {
        try {
+           if (position == RecyclerView.NO_POSITION) {
+               return
+           }
+
            val currentItem = this.items[position]
            this.items.remove(currentItem)
            notifyItemRemoved(position)
+           this.removeCallback?.onItemRemoved(currentItem, position)
        } catch (ex: Exception) {
            this.errorListener?.onErrorAttached(ex)
        }
+    }
+
+    /**
+     * Use this Method when You want to Remove Item With Animation
+     * If you Don't Use Animation Use this Method (removeItem(Position))
+     * if You want a Fade Out Animation Call this Method
+     */
+    override fun removeItem(position: Int, isAnimationEnabled: Boolean, animationDuration: Long, targetView: View?) {
+        try {
+            if (position == RecyclerView.NO_POSITION) {
+                return
+            }
+
+            if (isAnimationEnabled) {
+                val anim: Animation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
+                anim.duration = animationDuration
+                targetView?.startAnimation(anim)
+            }
+
+            removeItem(position)
+        } catch (ex: Exception) {
+            this.errorListener?.onErrorAttached(ex)
+        }
     }
 
     /**
