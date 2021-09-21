@@ -248,12 +248,12 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      * If The ItemView Found by Position will Return it else will Return Default ItemView Type
      */
     override fun getItemViewType(position: Int): Int {
-        try {
+        return try {
             val currentItem = currentItems[position]
-            return currentItem.getItemViewType()
+            currentItem.getItemViewType()
         } catch (ex: Exception) {
             errorsCallback?.onErrorAttached(ex)
-            return super.getItemViewType(position)
+            super.getItemViewType(position)
         }
     }
 
