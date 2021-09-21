@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.data.PalexSingleItem
 import com.yazantarifi.palex.adapter.impl.PalexSingleItemAdapterImplementation
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
+import java.lang.Exception
 
 /**
  * This Adapter mainly Built to Bind Single Item Only
@@ -21,6 +23,7 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     private val items: ArrayList<Item>
 ): RecyclerView.Adapter<ViewHolder>(), PalexSingleItemAdapterImplementation<Item, ViewHolder> {
 
+    private var errorListener: PalexAdapterErrorListener? = null
     private var clicksCallback: PalexItemClickCallback<Item>? = null
     private val childClickableIds: ArrayList<Int> by lazy {
         ArrayList()
@@ -43,10 +46,19 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      * Calling onBindItem on Each Item With All Information Needed for Single Item
      * Used Like this To Get Context Always , In Some Cases it's Better To Send Context
      * Directly Rather than Requesting Context from Views ...
+     *
+     * Bind on Each Focused Items The Clickable Views
+     * 1. Parent Clickable Views
+     * 2. Childs Ids Clickable Views
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        onBindClickableItems(holder, position)
-        onChildViewsClickableItemsBinding(holder, position)
+        try {
+            onBindClickableItems(holder, position)
+            onChildViewsClickableItemsBinding(holder, position)
+        } catch (ex: Exception) {
+            this.errorListener?.onErrorAttached(ex)
+        }
+
         onBindItem(items[position], context, position, holder)
     }
 
@@ -120,6 +132,58 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      */
     override fun getLayoutInstance(context: Context): View {
         return LayoutInflater.from(context).inflate(layoutResource, null, false)
+    }
+
+    /**
+     * Use this Method when You want to Set More items in The List
+     * Then Notify the Adapter that Items has Been Changed
+     * Used After Fetching Next Page from Pagination
+     */
+    override fun addItems(items: ArrayList<Item>) {
+        try {
+            this.items.addAll(items)
+            notifyDataSetChanged()
+        } catch (ex: Exception) {
+            this.errorListener?.onErrorAttached(ex)
+        }
+    }
+
+    /**
+     * Use this method when you want to Remove The Current Items
+     * And Replace all of them with New Items
+     * Then Notify The Adapter that All Items Has Been Changed
+     */
+    override fun replaceItems(items: ArrayList<Item>) {
+        try {
+            this.items.clear()
+            this.items.addAll(items)
+            notifyDataSetChanged()
+        } catch (ex: Exception) {
+            this.errorListener?.onErrorAttached(ex)
+        }
+    }
+
+    /**
+     * Use this Method when You Want to Remove Item By Position
+     * Just Call this Method With The Target Remvoed Position and This Will Rmeove
+     * The Target Item then Notify Adapter that Item is Removed from List
+     */
+    override fun removeItem(position: Int) {
+       try {
+           val currentItem = this.items[position]
+           this.items.remove(currentItem)
+           notifyItemRemoved(position)
+       } catch (ex: Exception) {
+           this.errorListener?.onErrorAttached(ex)
+       }
+    }
+
+    /**
+     * Use This Method when You want To Catch un Expected Exceptions in Adapter
+     * from Any Method and Return To Log Exceptions
+     */
+    override fun addErrorListener(callback: PalexAdapterErrorListener) {
+        this.errorListener = callback
     }
 
     /**

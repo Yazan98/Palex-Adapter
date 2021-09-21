@@ -174,6 +174,47 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
     }
 
     /**
+     * Use This Method Only if You Have Unique Item in Adapter
+     * and You Want to Access it By ViewType to Return it's information
+     */
+    override fun getItemByViewType(viewType: Int): Item? {
+        var targetItem: Item? = null
+        for (item in currentItems) {
+            if (item.getItemViewType() == viewType) {
+                targetItem = item
+            }
+        }
+
+        return targetItem
+    }
+
+    /**
+     * Use this method Only if You wand To Know the Position of the Item
+     * based on it's ViewType
+     *
+     * Param : isAsc to Decide if you want to Find the Position of the Item
+     * From Top To Bottom if True
+     * From Bottom To Up if False
+     *
+     * If The Item Not Found the Returned Value Will be RecyclerView.NO_POSITION
+     */
+    override fun getPositionByItemType(itemType: Int, isAsc: Boolean): Int {
+        return try {
+            var currentPosition = RecyclerView.NO_POSITION
+            val targetList = if (isAsc) currentItems.withIndex() else currentItems.asReversed().withIndex()
+            for ((index, value) in targetList) {
+                if (value.getItemViewType() == itemType) {
+                    currentPosition = index
+                }
+            }
+            currentPosition
+        } catch (ex: Exception) {
+            this.errorsCallback?.onErrorAttached(ex)
+            RecyclerView.NO_POSITION
+        }
+    }
+
+    /**
      * This Method Used when You Add Items From Pagination After Requesting New Pages
      * If The Pagination is Finished Will Remove All Pagination Logic
      * If False will Add items To Prev Items In Adapter and Let Adapter Know

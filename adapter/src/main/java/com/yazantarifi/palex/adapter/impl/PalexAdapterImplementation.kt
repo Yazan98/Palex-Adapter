@@ -32,6 +32,10 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.V
 
     fun setViewTypesFactory(factory: PalexItemViewsFactory<Item>)
 
+    fun getItemByViewType(viewType: Int): Item?
+
+    fun getPositionByItemType(itemType: Int, isAsc: Boolean): Int
+
     fun bindClickableViews(itemView: View, item: Item, position: Int)
 
     fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.data.PalexSingleItem
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 
 interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder: RecyclerView.ViewHolder> {
@@ -16,7 +17,15 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
 
     fun addChildClickableViewIds(childClickableIds: ArrayList<Int>)
 
+    fun addItems(items: ArrayList<Item>)
+
+    fun replaceItems(items: ArrayList<Item>)
+
+    fun removeItem(position: Int)
+
     fun addClickListener(callback: PalexItemClickCallback<Item>)
+
+    fun addErrorListener(callback: PalexAdapterErrorListener)
 
     fun getViewHolder(context: Context): ViewHolder
 
