@@ -182,7 +182,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
                 }
             }
 
-            if (isPaginationEnabled && ((position / paginationPageSize) + paginationPageSize) >= paginationPageSize) {
+            if (isPaginationEnabled && ((position - paginationPageSize) + (paginationPageSize / 2)) >= paginationPageSize) {
                 paginationCallback?.onNextPageRequest()
             }
         } catch (ex: Exception) {

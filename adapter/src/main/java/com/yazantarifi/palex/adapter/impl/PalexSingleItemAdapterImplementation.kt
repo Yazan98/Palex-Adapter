@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.data.PalexSingleItem
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 
@@ -27,6 +28,10 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
     fun removeItem(position: Int)
 
     fun removeItem(position: Int, isAnimationEnabled: Boolean, animationDuration: Long, targetView: View?)
+
+    fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback)
+
+    fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>)
 
     fun addClickListener(callback: PalexItemClickCallback<Item>)
 
