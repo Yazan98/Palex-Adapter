@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.adapter.data.PalexSingleItem
 import com.yazantarifi.palex.adapter.impl.PalexSingleItemAdapterImplementation
+import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 
 /**
  * This Adapter mainly Built to Bind Single Item Only
@@ -19,6 +20,11 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     private val layoutResource: Int,
     private val items: ArrayList<Item>
 ): RecyclerView.Adapter<ViewHolder>(), PalexSingleItemAdapterImplementation<Item, ViewHolder> {
+
+    private var clicksCallback: PalexItemClickCallback<Item>? = null
+    private val childClickableIds: ArrayList<Int> by lazy {
+        ArrayList()
+    }
 
     /**
      * Create Your Own Instance in Your Adapter to Return Instance of The ViewHolder
@@ -39,7 +45,73 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      * Directly Rather than Requesting Context from Views ...
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        onBindClickableItems(holder, position)
+        onChildViewsClickableItemsBinding(holder, position)
         onBindItem(items[position], context, position, holder)
+    }
+
+    /**
+     * Bind Each Item Parent Layout With Click Listener and Long Click Listener
+     * To Return the Clicked Event to Callback Methods
+     *
+     * You Need to Call addClickListener(Listener) to Activate this Method
+     */
+    override fun onBindClickableItems(viewHolder: ViewHolder, position: Int) {
+        if (this.clicksCallback == null) {
+            return
+        }
+
+        viewHolder.itemView?.setOnClickListener {
+            this.clicksCallback?.onItemClicked(items[position], position, it.id)
+        }
+
+        viewHolder.itemView?.setOnLongClickListener {
+            this.clicksCallback?.onItemLongClicked(items[position], position, it.id)
+            true
+        }
+    }
+
+    /**
+     * This Method Will Bind the Child Clickable Ids from This Method
+     * addChildClickableViewIds(ArrayList<Clickable Layout Ids>)
+     *
+     * this Will Check on All Child Ids in the ArrayList to Add Click Listeners on Each Item
+     */
+    override fun onChildViewsClickableItemsBinding(viewHolder: ViewHolder, position: Int) {
+        if (this.clicksCallback == null || childClickableIds.isEmpty()) {
+            return
+        }
+
+        for (item in childClickableIds) {
+            viewHolder.itemView?.findViewById<View>(item)?.let {
+                it.setOnClickListener {
+                    this.clicksCallback?.onItemClicked(items[position], position, it.id)
+                }
+
+                it.setOnLongClickListener {
+                    this.clicksCallback?.onItemLongClicked(items[position], position, it.id)
+                    true
+                }
+            }
+        }
+    }
+
+    /**
+     * Use this Method Only if your Design has Childs Items Clickable
+     * If Not Leave this Metho with Empty Array and the Binder Will Skip Checking
+     * on Child Items
+     */
+    override fun addChildClickableViewIds(childClickableIds: ArrayList<Int>) {
+        this.childClickableIds.addAll(childClickableIds)
+    }
+
+    /**
+     * Use this Method When you want to Bind Clicks on Each Item in The List
+     * Just attach the Listener and The Callback Will be Called
+     * When You Click on Any Item in Adapter
+     */
+    override fun addClickListener(callback: PalexItemClickCallback<Item>) {
+        this.clicksCallback = callback
     }
 
     /**
