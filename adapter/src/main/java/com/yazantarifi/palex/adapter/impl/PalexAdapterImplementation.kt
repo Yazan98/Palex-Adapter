@@ -30,7 +30,7 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.V
 
     fun setClickableViewsFactory(factory: PalexClickableViewsFactory)
 
-    fun setViewTypesFactory(factory: PalexItemViewsFactory<Item, ViewHolder>)
+    fun setViewTypesFactory(factory: PalexItemViewsFactory<Item>)
 
     fun bindClickableViews(itemView: View, item: Item, position: Int)
 

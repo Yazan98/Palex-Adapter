@@ -127,9 +127,9 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      * Add All Supported item Views One Time to Adapter
      * and Adapter Will Map All of them in Supported Item Views Internally
      */
-    override fun setViewTypesFactory(factory: PalexItemViewsFactory<Item, ViewHolder>) {
+    override fun setViewTypesFactory(factory: PalexItemViewsFactory<Item>) {
         factory.getSupportedViewTypes().forEach {
-            this.currentViewItems.add(it)
+            this.currentViewItems.add(it as PalexItemView<Item, ViewHolder>)
         }
     }
 
@@ -249,8 +249,8 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      */
     override fun getItemViewType(position: Int): Int {
         try {
-            val currentItem = currentItems[position] as? PalexItemView<Item, ViewHolder> ?: return super.getItemViewType(position)
-            return currentItem.getViewType()
+            val currentItem = currentItems[position]
+            return currentItem.getItemViewType()
         } catch (ex: Exception) {
             errorsCallback?.onErrorAttached(ex)
             return super.getItemViewType(position)
