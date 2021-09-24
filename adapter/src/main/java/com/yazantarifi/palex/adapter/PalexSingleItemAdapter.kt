@@ -16,7 +16,6 @@ import android.R
 import android.annotation.SuppressLint
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 
 
@@ -32,11 +31,8 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     private val items: ArrayList<Item>
 ): RecyclerView.Adapter<ViewHolder>(), PalexSingleItemAdapterImplementation<Item, ViewHolder> {
 
-    private var paginationPageSize: Int = 0
-    private var isPaginationEnabled: Boolean = false
     private var removeCallback: PalexRemoveListener<Item>? = null
     private var errorListener: PalexAdapterErrorListener? = null
-    private var paginationCallback: PalexAdapterPaginationCallback? = null
     private var clicksCallback: PalexItemClickCallback<Item>? = null
     private val childClickableIds: ArrayList<Int> by lazy {
         ArrayList()
@@ -73,10 +69,6 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
         }
 
         onBindItem(items[position], context, position, holder)
-
-        if (isPaginationEnabled && ((position - paginationPageSize) + (paginationPageSize / 2)) >= paginationPageSize) {
-            paginationCallback?.onNextPageRequest()
-        }
     }
 
     /**
@@ -140,6 +132,10 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      */
     override fun addRemoveListener(callback: PalexRemoveListener<Item>) {
         this.removeCallback = callback
+    }
+
+    override fun getItems(): ArrayList<Item> {
+        return this.items
     }
 
     /**
@@ -262,31 +258,6 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      */
     override fun addErrorListener(callback: PalexAdapterErrorListener) {
         this.errorListener = callback
-    }
-
-    /**
-     * This Method Used when You Add Items From Pagination After Requesting New Pages
-     * If The Pagination is Finished Will Remove All Pagination Logic
-     * If False will Add items To Prev Items In Adapter and Let Adapter Know
-     * The Data Was Changed ...
-     */
-    override fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>) {
-        if (isFinished) {
-            this.isPaginationEnabled = false
-            this.paginationPageSize = 0
-            this.paginationCallback = null
-        }
-
-        addItems(newItems)
-    }
-
-    /**
-     * Add Pagination Info Here to Request New Page And What is The Page Size For Each Request
-     * Here you Can Enable or Disable the Pagination in Adapter
-     */
-    override fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback) {
-        this.isPaginationEnabled = isEnabled
-        this.paginationPageSize = pageSize
     }
 
     /**

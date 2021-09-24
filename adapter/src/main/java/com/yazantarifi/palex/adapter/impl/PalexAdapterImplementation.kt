@@ -47,9 +47,7 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.V
 
     fun bindClickableViews(itemView: View, item: Item, position: Int)
 
-    fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback)
-
-    fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>)
+    fun getItems(): ArrayList<Item>
 
     fun destroy()
 

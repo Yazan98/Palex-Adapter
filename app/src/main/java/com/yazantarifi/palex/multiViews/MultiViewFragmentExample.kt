@@ -3,7 +3,9 @@ package com.yazantarifi.palex.multiViews
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.admanager.AdManagerAdRequest
 import com.yazantarifi.palex.R
 import com.yazantarifi.palex.adapter.PalexAdapter
 import com.yazantarifi.palex.adapter.PalexRecyclerViewInit
@@ -13,10 +15,14 @@ import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.data.PalexItem
 import kotlinx.android.synthetic.main.fragment_multi_views_example.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example), PalexAdapterErrorListener {
 
+    private var adapterInstance: PalexAdapter<PalexItem, PostViewHolder>? = null
     private val pool: RecyclerView.RecycledViewPool by lazy {
         RecyclerView.RecycledViewPool()
     }
@@ -29,17 +35,36 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
     private fun setupRecyclerView() {
         multiViewsRecyclerView?.apply {
             this.setRecycledViewPool(pool)
-            PalexRecyclerViewInit.initVerticalView(requireContext(), this, getPostsAdapter())
+            getPostsAdapter()?.let {
+                PalexRecyclerViewInit.initVerticalView(requireContext(), this, it)
+                lifecycleScope.launch(Dispatchers.Main) {
+                    /**
+                     * This is Just an Example for Loading Ads in RecyclerView
+                     * Don't Do this In Production it's not a good place to Load Ads in Adapter
+                     */
+                    delay(2000)
+                    it.getItems().let {
+                        for (i in it) {
+                            (i as? Post)?.let {
+                                i.adView?.loadAd(AdManagerAdRequest.Builder().build())
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
-    private fun getPostsAdapter(): PalexAdapter<PalexItem, PostViewHolder> {
-        return PalexAdapter<PalexItem, PostViewHolder>(getPostsItems(), requireContext(), pool).apply {
-            this.addErrorsCallback(this@MultiViewFragmentExample)
-            this.addPaginationStatus(true, 8, paginationCallback)
-            this.setViewTypesFactory(PostsItemViewFactory())
-            this.setHasStableIds(true)
+    private fun getPostsAdapter(): PalexAdapter<PalexItem, PostViewHolder>? {
+        if (adapterInstance == null) {
+            adapterInstance = PalexAdapter<PalexItem, PostViewHolder>(getPostsItems(), requireContext(), pool).apply {
+                this.addErrorsCallback(this@MultiViewFragmentExample)
+                this.setViewTypesFactory(PostsItemViewFactory())
+                this.setHasStableIds(true)
+            }
         }
+
+        return adapterInstance
     }
 
     private fun getPostsItems(): ArrayList<PalexItem> {

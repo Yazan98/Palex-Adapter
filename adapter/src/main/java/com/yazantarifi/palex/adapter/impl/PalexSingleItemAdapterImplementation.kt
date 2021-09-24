@@ -29,15 +29,13 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
 
     fun removeItem(position: Int, isAnimationEnabled: Boolean, animationDuration: Long, targetView: View?)
 
-    fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback)
-
-    fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>)
-
     fun addClickListener(callback: PalexItemClickCallback<Item>)
 
     fun addErrorListener(callback: PalexAdapterErrorListener)
 
     fun addRemoveListener(callback: PalexRemoveListener<Item>)
+
+    fun getItems(): ArrayList<Item>
 
     fun getViewHolder(context: Context): ViewHolder
 

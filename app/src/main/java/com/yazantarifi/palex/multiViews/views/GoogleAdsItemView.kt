@@ -25,15 +25,11 @@ class GoogleAdsItemView: PalexItemView<PalexItem, GoogleAdsItemView.ViewHolder>(
         pool: RecyclerView.RecycledViewPool?
     ) {
         (item as? Post)?.let {
-            if (it.isNative) {
-
-            } else {
-                viewHolder.adManagerAdView?.let { it1 -> loadBannerItem(it1) }
-            }
+            viewHolder.adManagerAdView?.let { it1 -> loadBannerItem(it1, it) }
         }
     }
 
-    private fun loadBannerItem(itemView: AdManagerAdView) {
+    private fun loadBannerItem(itemView: AdManagerAdView, item: Post) {
         itemView.setAdSizes(AdSize.BANNER)
         itemView.adListener = object : AdListener() {
             override fun onAdFailedToLoad(p0: LoadAdError) {
@@ -46,8 +42,8 @@ class GoogleAdsItemView: PalexItemView<PalexItem, GoogleAdsItemView.ViewHolder>(
                 println("III :: Loading Ads Success")
             }
         }
-        val adRequest = AdManagerAdRequest.Builder().build()
-        itemView.loadAd(adRequest)
+
+        item.adView = itemView
     }
 
     override fun onBindViewHolder(context: Context): ViewHolder {

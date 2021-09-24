@@ -14,13 +14,9 @@ import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.adapter.factory.PalexItemViewsFactory
 import com.yazantarifi.palex.adapter.impl.PalexAdapterImplementation
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
-import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 import java.lang.Exception
-import androidx.core.content.ContentProviderCompat.requireContext
-
-
 
 
 /**
@@ -37,15 +33,12 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
     private val viewPool: RecyclerView.RecycledViewPool? = null
 ) : RecyclerView.Adapter<ViewHolder>(), PalexAdapterImplementation<Item, ViewHolder> {
 
-    private var paginationPageSize: Int = 0
-    private var isPaginationEnabled: Boolean = false
     private var removeCallback: PalexRemoveListener<Item>? = null
     private var errorsCallback: PalexAdapterErrorListener? = null
-    private var paginationCallback: PalexAdapterPaginationCallback? = null
     private var clickCallback: PalexItemClickCallback<Item>? = null
     private val parentClickableViews: ArrayList<Int> by lazy { ArrayList<Int>() }
     private val childsClickableViews: ArrayList<Int> by lazy { ArrayList() }
-    private val currentViewItems: ArrayList<PalexItemView<Item, ViewHolder>> by lazy(LazyThreadSafetyMode.NONE) { ArrayList() }
+    private val currentViewItems: HashMap<Int, PalexItemView<Item, ViewHolder>> by lazy(LazyThreadSafetyMode.NONE) { HashMap() }
     companion object {
         private const val EXTRA_COUNT_ITEMS = 0
     }
@@ -59,7 +52,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      * And onBindView will Bind Each Item With the Current Item
      */
     override fun addItemViewType(item: PalexItemView<Item, ViewHolder>) {
-        currentViewItems.add(item)
+        currentViewItems[item.getViewType()] = item
     }
 
     /**
@@ -146,7 +139,7 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      */
     override fun setViewTypesFactory(factory: PalexItemViewsFactory<Item>) {
         factory.getSupportedViewTypes().forEach {
-            this.currentViewItems.add(it as PalexItemView<Item, ViewHolder>)
+            this.currentViewItems[it.getViewType()] = it as PalexItemView<Item, ViewHolder>
         }
     }
 
@@ -155,13 +148,10 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      * This Method Will Loop on Supported Items to Find Item by Specific Type
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var currentItem: PalexItemView<Item, ViewHolder>? = null
-        for (value in this.currentViewItems) {
-            if (value.getViewType() == viewType) {
-                currentItem = value
-            }
+        val currentItem: PalexItemView<Item, ViewHolder>? = currentViewItems[viewType]
+        if (currentItem == null) {
+            errorsCallback?.onErrorAttached(NullPointerException("View Holder Not Found By ViewType : ${viewType} / Make Sure you Set the ViewType Correctly in ItemView Class"))
         }
-
         return currentItem?.onBindViewHolder(parent.context) as ViewHolder
     }
 
@@ -176,14 +166,8 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
         try {
             val currentItem = currentItems[position]
             bindClickableViews(holder.itemView, currentItem, position)
-            for (viewItem in currentViewItems) {
-                if (viewItem.getViewType() == currentItem.getItemViewType()) {
-                    viewItem.onBindViewItem(currentItem, position, holder, context, viewPool)
-                }
-            }
-
-            if (isPaginationEnabled && ((position - paginationPageSize) + (paginationPageSize / 2)) >= paginationPageSize) {
-                paginationCallback?.onNextPageRequest()
+            currentViewItems[currentItem.getItemViewType()]?.let {
+                it.onBindViewItem(currentItem, position, holder, context, viewPool)
             }
         } catch (ex: Exception) {
             this.errorsCallback?.onErrorAttached(ex)
@@ -229,31 +213,6 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
             this.errorsCallback?.onErrorAttached(ex)
             RecyclerView.NO_POSITION
         }
-    }
-
-    /**
-     * This Method Used when You Add Items From Pagination After Requesting New Pages
-     * If The Pagination is Finished Will Remove All Pagination Logic
-     * If False will Add items To Prev Items In Adapter and Let Adapter Know
-     * The Data Was Changed ...
-     */
-    override fun changePaginationStatus(isFinished: Boolean, newItems: ArrayList<Item>) {
-        if (isFinished) {
-            this.isPaginationEnabled = false
-            this.paginationPageSize = 0
-            this.paginationCallback = null
-        }
-
-        addItems(newItems)
-    }
-
-    /**
-     * Add Pagination Info Here to Request New Page And What is The Page Size For Each Request
-     * Here you Can Enable or Disable the Pagination in Adapter
-     */
-    override fun addPaginationStatus(isEnabled: Boolean, pageSize: Int, callback: PalexAdapterPaginationCallback) {
-        this.isPaginationEnabled = isEnabled
-        this.paginationPageSize = pageSize
     }
 
     /**
@@ -394,6 +353,13 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
     }
 
     /**
+     * Used When anyone trying to access All Items to Loop on Them
+     */
+    override fun getItems(): ArrayList<Item> {
+        return currentItems
+    }
+
+    /**
      * It's Important to Call this Method in
      * Activity -> onDestroy
      * Fragment -> onDestroyView
@@ -403,7 +369,6 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
     override fun destroy() {
         this.clickCallback = null
         this.errorsCallback = null
-        this.paginationCallback = null
         this.removeCallback = null
     }
 

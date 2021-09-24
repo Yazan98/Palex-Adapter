@@ -12,7 +12,7 @@ import com.yazantarifi.palex.adapter.data.PalexItemId
  * If you Don't Have Nested RecyclerViews in Your Screen Send viewPool as Null
  * Context is Always Required in All Palex Adapters
  */
-open class PalexItemAdapter<Item: PalexItemId, ViewHolder: RecyclerView.ViewHolder> constructor(
+open class PalexMultiItemAdapter<Item: PalexItemId, ViewHolder: RecyclerView.ViewHolder> constructor(
     private val currentItems: ArrayList<Item> = ArrayList(),
     private val context: Context,
     private val viewPool: RecyclerView.RecycledViewPool? = null

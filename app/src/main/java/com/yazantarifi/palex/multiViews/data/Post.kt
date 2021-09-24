@@ -1,5 +1,6 @@
 package com.yazantarifi.palex.multiViews.data
 
+import com.google.android.gms.ads.admanager.AdManagerAdView
 import com.yazantarifi.palex.adapter.data.PalexItem
 
 data class Post(
@@ -12,7 +13,8 @@ data class Post(
     var ownerName: String,
     var images: List<String>,
     var singleImage: String,
-    var isNative: Boolean = false
+    var isNative: Boolean = false,
+    var adView: AdManagerAdView? = null
 ): PalexItem {
 
     companion object {
