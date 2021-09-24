@@ -190,7 +190,7 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
 
     /**
      * Use this Method when You Want to Remove Item By Position
-     * Just Call this Method With The Target Remvoed Position and This Will Rmeove
+     * Just Call this Method With The Target Removed Position and This Will Remove
      * The Target Item then Notify Adapter that Item is Removed from List
      *
      * If you want to Get Event Callback about Removing Item
@@ -243,6 +243,9 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     override fun addClickEffectItem(view: View?) {
         try {
             view?.let {
+                view.isClickable = true
+                view.isFocusable = true
+
                 val attrs = intArrayOf(R.attr.selectableItemBackground)
                 val typedArray: TypedArray = context.obtainStyledAttributes(attrs)
                 val backgroundResource = typedArray.getResourceId(0, 0)

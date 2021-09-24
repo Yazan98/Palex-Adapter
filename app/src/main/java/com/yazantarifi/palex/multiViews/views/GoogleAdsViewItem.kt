@@ -1,16 +1,18 @@
 package com.yazantarifi.palex.multiViews.views
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.yazantarifi.palex.R
 import com.yazantarifi.palex.adapter.data.PalexItem
 import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.multiViews.data.Post
-import com.yazantarifi.palex.multiViews.data.PostViewHolder
+import kotlinx.android.synthetic.main.row_image_post.view.*
 
-class PostImageItemView: PalexItemView<PalexItem, PostImageItemView.ViewHolder>() {
+class GoogleAdsViewItem: PalexItemView<PalexItem, GoogleAdsViewItem.ViewHolder>() {
     override fun onBindViewItem(
         item: PalexItem,
         position: Int,
@@ -18,7 +20,12 @@ class PostImageItemView: PalexItemView<PalexItem, PostImageItemView.ViewHolder>(
         context: Context,
         pool: RecyclerView.RecycledViewPool?
     ) {
-        TODO("Not yet implemented")
+        (item as? Post)?.let {
+            viewHolder.title?.text = it.title
+            viewHolder.image?.let { it1 ->
+                Picasso.get().load(it.singleImage).into(it1)
+            }
+        }
     }
 
     override fun onBindViewHolder(context: Context): ViewHolder {
@@ -34,6 +41,7 @@ class PostImageItemView: PalexItemView<PalexItem, PostImageItemView.ViewHolder>(
     }
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
-
+        val title: TextView? = view.title
+        val image: ImageView? = view.loadPostImage
     }
 }

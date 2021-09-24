@@ -36,7 +36,7 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
     private fun getPostsAdapter(): PalexAdapter<PalexItem, PostViewHolder> {
         return PalexAdapter<PalexItem, PostViewHolder>(getPostsItems(), requireContext(), pool).apply {
             this.addErrorsCallback(this@MultiViewFragmentExample)
-            this.addPaginationStatus(true, 10, paginationCallback)
+            this.addPaginationStatus(true, 8, paginationCallback)
             this.setViewTypesFactory(PostsItemViewFactory())
             this.setHasStableIds(true)
         }
@@ -72,6 +72,26 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
         }
     }
 

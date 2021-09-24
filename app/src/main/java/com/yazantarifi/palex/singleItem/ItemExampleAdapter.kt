@@ -20,6 +20,7 @@ class ItemExampleAdapter constructor(
         viewHolder.description?.text = item.description
         viewHolder.postText?.text = item.title
         viewHolder.position?.text = "Position : $position"
+        addClickEffectItem(viewHolder.itemView)
     }
 
     override fun getViewHolder(context: Context): ItemExampleViewHolder {

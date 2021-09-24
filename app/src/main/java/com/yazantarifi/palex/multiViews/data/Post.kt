@@ -16,7 +16,7 @@ data class Post(
 
     companion object {
         const val TEXT = 1
-        const val IMAGES = 2
+        const val GOOGLE_ADS = 2
         const val SINGLE_IMAGE = 3
     }
 
