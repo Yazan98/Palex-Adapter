@@ -2,13 +2,21 @@ package com.yazantarifi.palex.singleItem
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.yazantarifi.palex.R
 import com.yazantarifi.palex.adapter.PalexRecyclerViewInit
 import com.yazantarifi.palex.adapter.PalexSingleItemAdapter
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import kotlinx.android.synthetic.main.screen_single_item.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SingleItemExampleScreen: AppCompatActivity() {
+
+    private val adapterInstance by lazy {
+        ItemExampleAdapter(getItems(), this@SingleItemExampleScreen)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +26,14 @@ class SingleItemExampleScreen: AppCompatActivity() {
 
     private fun setupRecyclerView() {
         singleItemRecyclerView?.apply {
-            PalexRecyclerViewInit.initVerticalView(this@SingleItemExampleScreen, this, ItemExampleAdapter(getItems(), this@SingleItemExampleScreen))
+            PalexRecyclerViewInit.initVerticalView(this@SingleItemExampleScreen, this, adapterInstance)
+            adapterInstance.addRecyclerViewInstance(this@apply)
+            adapterInstance.addPaginationListener(object: PalexAdapterPaginationCallback {
+                override fun onNextPageRequest() {
+                    println("III on New Page Request")
+                    adapterInstance.addItems(getItems())
+                }
+            })
         }
     }
 

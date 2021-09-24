@@ -14,6 +14,7 @@ import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.adapter.factory.PalexItemViewsFactory
 import com.yazantarifi.palex.adapter.impl.PalexAdapterImplementation
 import com.yazantarifi.palex.adapter.listeners.PalexAdapterErrorListener
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexItemClickCallback
 import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 import java.lang.Exception
@@ -33,6 +34,8 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
     private val viewPool: RecyclerView.RecycledViewPool? = null
 ) : RecyclerView.Adapter<ViewHolder>(), PalexAdapterImplementation<Item, ViewHolder> {
 
+    private var recyclerViewInstance: RecyclerView? = null
+    private var paginationCallback: PalexAdapterPaginationCallback? = null
     private var removeCallback: PalexRemoveListener<Item>? = null
     private var errorsCallback: PalexAdapterErrorListener? = null
     private var clickCallback: PalexItemClickCallback<Item>? = null
@@ -60,9 +63,15 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
      * This Method Will Notify Data Set Changed in Adapter
      */
     override fun addItems(items: List<Item>?) {
-        items?.let {
-            this.currentItems.addAll(it)
-            notifyDataSetChanged()
+        try {
+            items?.let {
+                this.currentItems.addAll(it)
+                recyclerViewInstance?.post {
+                    notifyDataSetChanged()
+                }
+            }
+        } catch (ex: Exception) {
+            this.errorsCallback?.onErrorAttached(ex)
         }
     }
 
@@ -169,9 +178,29 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
             currentViewItems[currentItem.getItemViewType()]?.let {
                 it.onBindViewItem(currentItem, position, holder, context, viewPool)
             }
+
+            if (position >= itemCount - 1) {
+                paginationCallback?.onNextPageRequest()
+            }
         } catch (ex: Exception) {
             this.errorsCallback?.onErrorAttached(ex)
         }
+    }
+
+    /**
+     * Important To Use it when you want To Support Pagination
+     * To Notify the Items Once RecyclerView is Finished Computing
+     */
+    override fun addRecyclerViewInstance(recyclerView: RecyclerView?) {
+        this.recyclerViewInstance = recyclerView
+    }
+
+    /**
+     * Use This Method when you want to Listen to your Last item in Items
+     * If Last Item Triggered, Will Request Next Page
+     */
+    override fun addPaginationListener(paginationCallback: PalexAdapterPaginationCallback) {
+        this.paginationCallback = paginationCallback
     }
 
     /**
@@ -370,6 +399,9 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
         this.clickCallback = null
         this.errorsCallback = null
         this.removeCallback = null
+        this.paginationCallback = null
+        this.recyclerViewInstance?.adapter = null
+        this.recyclerViewInstance = null
     }
 
 }

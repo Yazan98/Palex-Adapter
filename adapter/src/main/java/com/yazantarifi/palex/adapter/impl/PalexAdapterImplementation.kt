@@ -25,6 +25,10 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.V
 
     fun getItemByPosition(position: Int): Item?
 
+    fun addPaginationListener(paginationCallback: PalexAdapterPaginationCallback)
+
+    fun addRecyclerViewInstance(recyclerView: RecyclerView?)
+
     fun addErrorsCallback(callback: PalexAdapterErrorListener)
 
     fun addRemoveCallback(callback: PalexRemoveListener<Item>)

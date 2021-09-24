@@ -16,6 +16,7 @@ import android.R
 import android.annotation.SuppressLint
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import com.yazantarifi.palex.adapter.listeners.PalexAdapterPaginationCallback
 import com.yazantarifi.palex.adapter.listeners.PalexRemoveListener
 
 
@@ -31,6 +32,8 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     private val items: ArrayList<Item>
 ): RecyclerView.Adapter<ViewHolder>(), PalexSingleItemAdapterImplementation<Item, ViewHolder> {
 
+    private var recyclerViewInstance: RecyclerView? = null
+    private var paginationCallback: PalexAdapterPaginationCallback? = null
     private var removeCallback: PalexRemoveListener<Item>? = null
     private var errorListener: PalexAdapterErrorListener? = null
     private var clicksCallback: PalexItemClickCallback<Item>? = null
@@ -61,6 +64,7 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
      * 2. Childs Ids Clickable Views
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        onBindItem(items[position], context, position, holder)
         try {
             onBindClickableItems(holder, position)
             onChildViewsClickableItemsBinding(holder, position)
@@ -68,7 +72,9 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
             this.errorListener?.onErrorAttached(ex)
         }
 
-        onBindItem(items[position], context, position, holder)
+        if (position >= itemCount - 1) {
+            paginationCallback?.onNextPageRequest()
+        }
     }
 
     /**
@@ -139,6 +145,14 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     }
 
     /**
+     * Use This Method when you want to Listen to your Last item in Items
+     * If Last Item Triggered, Will Request Next Page
+     */
+    override fun addPaginationListener(paginationCallback: PalexAdapterPaginationCallback) {
+        this.paginationCallback = paginationCallback
+    }
+
+    /**
      * Use this Method When you want to Bind Clicks on Each Item in The List
      * Just attach the Listener and The Callback Will be Called
      * When You Click on Any Item in Adapter
@@ -163,10 +177,20 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     override fun addItems(items: ArrayList<Item>) {
         try {
             this.items.addAll(items)
-            notifyDataSetChanged()
+            recyclerViewInstance?.post {
+                notifyDataSetChanged()
+            }
         } catch (ex: Exception) {
             this.errorListener?.onErrorAttached(ex)
         }
+    }
+
+    /**
+     * Important To Use it when you want To Support Pagination
+     * To Notify the Items Once RecyclerView is Finished Computing
+     */
+    override fun addRecyclerViewInstance(recyclerView: RecyclerView?) {
+        this.recyclerViewInstance = recyclerView
     }
 
     /**
@@ -267,4 +291,20 @@ abstract class PalexSingleItemAdapter<Item: PalexSingleItem, ViewHolder: Recycle
     override fun getItemCount(): Int {
         return items.size
     }
+
+    /**
+     * It's Important to Call this Method in
+     * Activity -> onDestroy
+     * Fragment -> onDestroyView
+     *
+     * To Remove All Listeners, Callbacks
+     */
+    override fun destroy() {
+        this.errorListener = null
+        this.removeCallback = null
+        this.paginationCallback = null
+        this.recyclerViewInstance?.adapter = null
+        this.recyclerViewInstance = null
+    }
+
 }

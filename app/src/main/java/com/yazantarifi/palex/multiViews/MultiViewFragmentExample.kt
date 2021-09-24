@@ -35,7 +35,7 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
     private fun setupRecyclerView() {
         multiViewsRecyclerView?.apply {
             this.setRecycledViewPool(pool)
-            getPostsAdapter()?.let {
+            getPostsAdapter(this)?.let {
                 PalexRecyclerViewInit.initVerticalView(requireContext(), this, it)
                 lifecycleScope.launch(Dispatchers.Main) {
                     /**
@@ -55,12 +55,20 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
         }
     }
 
-    private fun getPostsAdapter(): PalexAdapter<PalexItem, PostViewHolder>? {
+    private fun getPostsAdapter(recyclerView: RecyclerView): PalexAdapter<PalexItem, PostViewHolder>? {
         if (adapterInstance == null) {
             adapterInstance = PalexAdapter<PalexItem, PostViewHolder>(getPostsItems(), requireContext(), pool).apply {
                 this.addErrorsCallback(this@MultiViewFragmentExample)
                 this.setViewTypesFactory(PostsItemViewFactory())
                 this.setHasStableIds(true)
+
+                adapterInstance?.addRecyclerViewInstance(recyclerView)
+                adapterInstance?.addPaginationListener(object: PalexAdapterPaginationCallback {
+                    override fun onNextPageRequest() {
+                        println("III on New Page Request")
+                        adapterInstance?.addItems(getItems())
+                    }
+                })
             }
         }
 

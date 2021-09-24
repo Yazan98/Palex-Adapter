@@ -23,6 +23,8 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
 
     fun addItems(items: ArrayList<Item>)
 
+    fun addRecyclerViewInstance(recyclerView: RecyclerView?)
+
     fun replaceItems(items: ArrayList<Item>)
 
     fun removeItem(position: Int)
@@ -40,5 +42,9 @@ interface PalexSingleItemAdapterImplementation<Item: PalexSingleItem, ViewHolder
     fun getViewHolder(context: Context): ViewHolder
 
     fun getLayoutInstance(context: Context): View
+
+    fun addPaginationListener(paginationCallback: PalexAdapterPaginationCallback)
+
+    fun destroy()
 
 }
