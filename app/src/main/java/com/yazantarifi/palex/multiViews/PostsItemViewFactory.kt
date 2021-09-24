@@ -8,7 +8,6 @@ import com.yazantarifi.palex.multiViews.views.GoogleAdsItemView
 import com.yazantarifi.palex.multiViews.views.PostTextItemView
 
 class PostsItemViewFactory: PalexItemViewsFactory<PalexItem>() {
-
     override fun getSupportedViewTypes(): ArrayList<PalexItemView<PalexItem, *>> {
         return ArrayList<PalexItemView<PalexItem, *>>().apply {
             this.add(PostTextItemView())
@@ -16,5 +15,4 @@ class PostsItemViewFactory: PalexItemViewsFactory<PalexItem>() {
             this.add(PostImageItemView())
         }
     }
-
 }

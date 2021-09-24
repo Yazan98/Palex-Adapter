@@ -154,12 +154,6 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
         }
     }
 
-    private val paginationCallback: PalexAdapterPaginationCallback = object : PalexAdapterPaginationCallback {
-        override fun onNextPageRequest() {
-            println("III :: onNextRequest")
-        }
-    }
-
     override fun onErrorAttached(exception: Exception) {
         println("III :: onError : ${exception.message}")
     }

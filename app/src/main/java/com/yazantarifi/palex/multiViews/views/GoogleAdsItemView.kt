@@ -31,18 +31,6 @@ class GoogleAdsItemView: PalexItemView<PalexItem, GoogleAdsItemView.ViewHolder>(
 
     private fun loadBannerItem(itemView: AdManagerAdView, item: Post) {
         itemView.setAdSizes(AdSize.BANNER)
-        itemView.adListener = object : AdListener() {
-            override fun onAdFailedToLoad(p0: LoadAdError) {
-                super.onAdFailedToLoad(p0)
-                println("III :: Loading Ads Failed : $p0")
-            }
-
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                println("III :: Loading Ads Success")
-            }
-        }
-
         item.adView = itemView
     }
 
