@@ -12,7 +12,7 @@ import com.yazantarifi.palex.adapter.data.PalexItemView
 import com.yazantarifi.palex.multiViews.data.Post
 import kotlinx.android.synthetic.main.row_image_post.view.*
 
-class GoogleAdsViewItem: PalexItemView<PalexItem, GoogleAdsViewItem.ViewHolder>() {
+class PostImageItemView: PalexItemView<PalexItem, PostImageItemView.ViewHolder>() {
     override fun onBindViewItem(
         item: PalexItem,
         position: Int,

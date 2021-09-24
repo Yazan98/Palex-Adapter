@@ -11,7 +11,8 @@ data class Post(
     var profileImage: String,
     var ownerName: String,
     var images: List<String>,
-    var singleImage: String
+    var singleImage: String,
+    var isNative: Boolean = false
 ): PalexItem {
 
     companion object {

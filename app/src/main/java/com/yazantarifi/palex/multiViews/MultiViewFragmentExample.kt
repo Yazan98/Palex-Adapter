@@ -50,6 +50,7 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
             add(Post(0, "Title Here", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "p into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
@@ -62,6 +63,12 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
@@ -72,6 +79,10 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
             add(Post(0, "Title Here", "description Here", 127382L, Post.TEXT, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
@@ -82,14 +93,29 @@ class MultiViewFragmentExample: Fragment(R.layout.fragment_multi_views_example),
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+            add(Post(0, "Title Here", "description Here", 127382L, Post.GOOGLE_ADS, "https://", "Yazan", emptyList(), ""))
+
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
             add(Post(0, "Title Here", "description Here", 127382L, Post.SINGLE_IMAGE, "https://", "Yazan", emptyList(), "https://images.ctfassets.net/hrltx12pl8hq/7yQR5uJhwEkRfjwMFJ7bUK/dc52a0913e8ff8b5c276177890eb0129/offset_comp_772626-opt.jpg?fit=fill&w=800&h=300"))
         }
