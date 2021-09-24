@@ -13,4 +13,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/singleItemButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Single Item Recycler View"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/multiViewsButton" />
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

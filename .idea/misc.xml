@@ -10,6 +10,8 @@
         <entry key="app/src/main/res/layout/row_image_post.xml" value="0.20380434782608695" />
         <entry key="app/src/main/res/layout/row_images.xml" value="0.20380434782608695" />
         <entry key="app/src/main/res/layout/row_post_text.xml" value="0.20833333333333334" />
+        <entry key="app/src/main/res/layout/row_single_item.xml" value="0.16530797101449277" />
+        <entry key="app/src/main/res/layout/screen_single_item.xml" value="0.16530797101449277" />
       </map>
     </option>
   </component>
