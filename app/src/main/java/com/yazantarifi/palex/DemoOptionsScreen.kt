@@ -19,6 +19,7 @@ class DemoOptionsScreen: AppCompatActivity() {
         singleItemButton?.setOnClickListener {
             startActivity(Intent(this@DemoOptionsScreen, SingleItemExampleScreen::class.java))
         }
+
     }
 
 }

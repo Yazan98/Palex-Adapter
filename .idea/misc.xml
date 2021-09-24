@@ -4,14 +4,17 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.24375" />
+        <entry key="app/src/main/res/layout/activity_ads.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20380434782608695" />
         <entry key="app/src/main/res/layout/activity_options.xml" value="0.1947463768115942" />
         <entry key="app/src/main/res/layout/fragment_multi_views_example.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/layout/row_ads_item.xml" value="0.16530797101449277" />
+        <entry key="app/src/main/res/layout/row_ads_items.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/row_image_post.xml" value="0.20380434782608695" />
         <entry key="app/src/main/res/layout/row_images.xml" value="0.20380434782608695" />
         <entry key="app/src/main/res/layout/row_post_text.xml" value="0.20833333333333334" />
         <entry key="app/src/main/res/layout/row_single_item.xml" value="0.16530797101449277" />
+        <entry key="app/src/main/res/layout/row_text_multi.xml" value="0.16530797101449277" />
         <entry key="app/src/main/res/layout/screen_single_item.xml" value="0.16530797101449277" />
       </map>
     </option>

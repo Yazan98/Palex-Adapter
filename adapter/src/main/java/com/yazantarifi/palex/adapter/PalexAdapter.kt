@@ -369,6 +369,10 @@ open class PalexAdapter<Item: PalexItem, ViewHolder: RecyclerView.ViewHolder> co
         }
     }
 
+    override fun getItemByPosition(position: Int): Item? {
+        return this.currentItems[position]
+    }
+
     /**
      * Get The Total RecyclerView Adapter Items Count
      * Needed To Know Everything about Recycling in Adapter

@@ -23,6 +23,8 @@ interface PalexAdapterImplementation<Item: PalexItem, ViewHolder: RecyclerView.V
 
     fun addItemClickListener(callback: PalexItemClickCallback<Item>)
 
+    fun getItemByPosition(position: Int): Item?
+
     fun addErrorsCallback(callback: PalexAdapterErrorListener)
 
     fun addRemoveCallback(callback: PalexRemoveListener<Item>)
