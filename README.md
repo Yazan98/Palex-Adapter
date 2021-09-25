@@ -26,7 +26,9 @@ To Bind the Views with Data
 
 ## Installation
 ```
-implementation "com.yazatarifi.palex.adapter:1.0.0"
+dependency {
+    implementation "com.yazatarifi.palex-android:1.0.1"
+}
 ```
 
 ## Example

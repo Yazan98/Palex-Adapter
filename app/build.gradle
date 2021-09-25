@@ -56,5 +56,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-ads:20.4.0'
     implementation "androidx.multidex:multidex:2.0.1"
 
-    implementation project(":adapter")
+//    implementation project(":adapter")
+    implementation "com.yazatarifi.palex-android:1.0.1"
+
 }

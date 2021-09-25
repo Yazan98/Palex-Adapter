@@ -2,7 +2,27 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
-apply plugin: 'kotlin-android'
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
+apply plugin: 'kotlin-android-extensions'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+ext {
+    PUBLISH_GROUP_ID = 'com.yazantarifi'
+    PUBLISH_VERSION = '1.0.1'
+    PUBLISH_ARTIFACT_ID = 'palex-android'
+    PUBLISH_DESCRIPTION = 'RecyclerView Adapter Library To Build Multiple Views'
+    PUBLISH_URL = 'https://github.com/Yazan98/Palex-Adapter'
+    PUBLISH_LICENSE_NAME = 'MIT'
+    PUBLISH_LICENSE_URL = 'https://github.com/Yazan98/Palex-Adapter/blob/main/LICENSE'
+    PUBLISH_DEVELOPER_ID = 'yt98'
+    PUBLISH_DEVELOPER_NAME = 'Yazan Tarifi'
+    PUBLISH_DEVELOPER_EMAIL = 'yazantarifi1@hotmail.com'
+    PUBLISH_SCM_CONNECTION = 'scm:git:github.com/Yazan98/Palex-Adapter.git'
+    PUBLISH_SCM_DEVELOPER_CONNECTION = 'scm:git:ssh://github.com/Yazan98/Palex-Adapter.git'
+    PUBLISH_SCM_URL = 'https://github.com/Yazan98/Palex-Adapter/tree/master'
+}
+
 
 android {
     compileSdkVersion 30
