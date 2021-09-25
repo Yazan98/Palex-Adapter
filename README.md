@@ -25,9 +25,20 @@ You Don't Need to Create Class to Override Anything Based on Adapter But you nee
 To Bind the Views with Data
 
 ## Installation
+
+Gradle Root File
+
+```
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+```
+
 ```
 dependency {
-    implementation "com.yazatarifi.palex-android:1.0.1"
+    implementation "com.yazantarifi:palex-android:1.0.1"
 }
 ```
 

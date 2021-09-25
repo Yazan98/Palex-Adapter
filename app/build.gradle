@@ -57,6 +57,6 @@ dependencies {
     implementation "androidx.multidex:multidex:2.0.1"
 
 //    implementation project(":adapter")
-    implementation "com.yazatarifi.palex-android:1.0.1"
+    implementation "com.yazantarifi:palex-android:1.0.1"
 
 }
